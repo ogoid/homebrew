@@ -5,11 +5,14 @@ class John < Formula
   url 'http://www.openwall.com/john/g/john-1.7.9.tar.bz2'
   sha1 '8f77bdd42b7cf94ec176f55ea69c4da9b2b8fe3b'
 
+  head 'https://github.com/magnumripper/JohnTheRipper.git', :branch => 'bleeding-jumbo'
+  ARGV << '--jumbo' if build.head? and not ARGV.include? '--jumbo'
+
   option 'jumbo', 'Build with jumbo-7 features'
 
   def patches
     p = [DATA] # Taken from MacPorts, tells john where to find runtime files
-    p << "http://www.openwall.com/john/g/john-1.7.9-jumbo-7.diff.gz" if build.include? 'jumbo'
+    p << "http://www.openwall.com/john/g/john-1.7.9-jumbo-7.diff.gz" if build.include? 'jumbo' and not build.head?
     return p
   end
 
